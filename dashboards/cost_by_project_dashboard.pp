@@ -1,5 +1,5 @@
 dashboard "cost_by_project_dashboard" {
-  title         = "Cost and Usage Report: Cost by Project"
+  title         = "GCP Cost and Usage Report: Cost by Project"
   documentation = file("./dashboards/docs/cost_by_project_dashboard.md")
 
   tags = merge(local.gcp_cost_and_usage_insights_common_tags, {
