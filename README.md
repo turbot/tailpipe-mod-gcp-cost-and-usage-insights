@@ -8,7 +8,7 @@ The [GCP Cost and Usage Insights Mod](https://hub.powerpipe.io/mods/turbot/tailp
 
 View insights in dashboards:
 ![image](docs/images/gcp_cost_and_usage_overview_dashboard.png)
-![image](docs/images/gcp_cost_and_usage_cost_by_service_dashboard.png)
+![image](docs/images/gcp_cost_and_usage_cloud_billing_report_cost_by_service_dashboard.png)
 
 ## Documentation
 

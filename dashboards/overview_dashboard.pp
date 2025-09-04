@@ -1,18 +1,18 @@
 dashboard "overview_dashboard" {
-  title         = "GCP Cost and Usage Report: Overview"
-  documentation = file("./dashboards/docs/overview_dashboard.md")
+  title         = "GCP Cloud Billing Report: Overview"
+  documentation = file("./dashboards/docs/cloud_billing_report_overview_dashboard.md")
 
-  tags = merge(local.gcp_cost_and_usage_insights_common_tags, {
+  tags = merge(local.gcp_cloud_billing_insights_common_tags, {
     type = "Dashboard"
   })
 
   container {
-    input "overview_dashboard_projects" {
+    input "cloud_billing_report_overview_dashboard_projects" {
       title       = "Select projects:"
       description = "Choose one or more GCP projects to analyze."
       type        = "multiselect"
       width       = 4
-      query       = query.overview_dashboard_projects_input
+      query       = query.cloud_billing_report_overview_dashboard_projects_input
     }
   }
 
@@ -20,34 +20,34 @@ dashboard "overview_dashboard" {
     # Summary Metrics
     card {
       width = 2
-      query = query.overview_dashboard_total_cost
+      query = query.cloud_billing_report_overview_dashboard_total_cost
       icon  = "attach_money"
       type  = "info"
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
 
     card {
       width = 2
-      query = query.overview_dashboard_total_projects
+      query = query.cloud_billing_report_overview_dashboard_total_projects
       icon  = "folder"
       type  = "info"
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
 
     card {
       width = 2
-      query = query.overview_dashboard_total_services
+      query = query.cloud_billing_report_overview_dashboard_total_services
       icon  = "layers"
       type  = "info"
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
   }
@@ -58,10 +58,10 @@ dashboard "overview_dashboard" {
       title = "Monthly Cost Trend"
       type  = "column"
       width = 6
-      query = query.overview_dashboard_monthly_cost
+      query = query.cloud_billing_report_overview_dashboard_monthly_cost
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
 
       legend {
@@ -73,10 +73,10 @@ dashboard "overview_dashboard" {
       title = "Daily Cost Trend"
       type  = "line"
       width = 6
-      query = query.overview_dashboard_daily_cost
+      query = query.cloud_billing_report_overview_dashboard_daily_cost
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
 
       legend {
@@ -91,10 +91,10 @@ dashboard "overview_dashboard" {
       title = "Top 10 Projects"
       type  = "table"
       width = 6
-      query = query.overview_dashboard_top_10_projects
+      query = query.cloud_billing_report_overview_dashboard_top_10_projects
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
 
@@ -102,10 +102,10 @@ dashboard "overview_dashboard" {
       title = "Top 10 Locations"
       type  = "table"
       width = 6
-      query = query.overview_dashboard_top_10_locations
+      query = query.cloud_billing_report_overview_dashboard_top_10_locations
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
 
@@ -113,10 +113,10 @@ dashboard "overview_dashboard" {
       title = "Top 10 Services"
       type  = "table"
       width = 6
-      query = query.overview_dashboard_top_10_services
+      query = query.cloud_billing_report_overview_dashboard_top_10_services
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
 
@@ -124,10 +124,10 @@ dashboard "overview_dashboard" {
       title = "Top 10 SKUs"
       type  = "table"
       width = 6
-      query = query.overview_dashboard_top_10_skus
+      query = query.cloud_billing_report_overview_dashboard_top_10_skus
 
       args = {
-        "project_ids" = self.input.overview_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
   }
@@ -135,7 +135,7 @@ dashboard "overview_dashboard" {
 
 # Queries
 
-query "overview_dashboard_total_cost" {
+query "cloud_billing_report_overview_dashboard_total_cost" {
   sql = <<-EOQ
     select
       'Total Cost (' || currency || ')' as label,
@@ -155,7 +155,7 @@ query "overview_dashboard_total_cost" {
   }
 }
 
-query "overview_dashboard_total_projects" {
+query "cloud_billing_report_overview_dashboard_total_projects" {
   sql = <<-EOQ
     select
       'Projects' as label,
@@ -173,7 +173,7 @@ query "overview_dashboard_total_projects" {
   }
 }
 
-query "overview_dashboard_total_services" {
+query "cloud_billing_report_overview_dashboard_total_services" {
   sql = <<-EOQ
     select
       'Services' as label,
@@ -191,7 +191,7 @@ query "overview_dashboard_total_services" {
   }
 }
 
-query "overview_dashboard_monthly_cost" {
+query "cloud_billing_report_overview_dashboard_monthly_cost" {
   sql = <<-EOQ
     select
       date_trunc('month', usage_start_time)::timestamp as "Month",
@@ -213,7 +213,7 @@ query "overview_dashboard_monthly_cost" {
   }
 }
 
-query "overview_dashboard_daily_cost" {
+query "cloud_billing_report_overview_dashboard_daily_cost" {
   sql = <<-EOQ
     select
       date_trunc('day', usage_start_time)::timestamp as "Date",
@@ -235,7 +235,7 @@ query "overview_dashboard_daily_cost" {
   }
 }
 
-query "overview_dashboard_top_10_projects" {
+query "cloud_billing_report_overview_dashboard_top_10_projects" {
   sql = <<-EOQ
     select
       project_id as "Project ID",
@@ -262,7 +262,7 @@ query "overview_dashboard_top_10_projects" {
   }
 }
 
-query "overview_dashboard_top_10_locations" {
+query "cloud_billing_report_overview_dashboard_top_10_locations" {
   sql = <<-EOQ
     select
       coalesce(location.region, 'global') as "Region",
@@ -287,7 +287,7 @@ query "overview_dashboard_top_10_locations" {
   }
 }
 
-query "overview_dashboard_top_10_services" {
+query "cloud_billing_report_overview_dashboard_top_10_services" {
   sql = <<-EOQ
     select
       service_description as "Service",
@@ -312,7 +312,7 @@ query "overview_dashboard_top_10_services" {
   }
 }
 
-query "overview_dashboard_top_10_skus" {
+query "cloud_billing_report_overview_dashboard_top_10_skus" {
   sql = <<-EOQ
     select
       sku_description as "SKU",
@@ -339,7 +339,7 @@ query "overview_dashboard_top_10_skus" {
   }
 }
 
-query "overview_dashboard_projects_input" {
+query "cloud_billing_report_overview_dashboard_projects_input" {
   sql = <<-EOQ
     with project_ids as (
       select

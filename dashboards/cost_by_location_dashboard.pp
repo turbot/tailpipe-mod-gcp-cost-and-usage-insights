@@ -1,19 +1,19 @@
-dashboard "cost_by_location_dashboard" {
-  title         = "GCP Cost and Usage Report: Cost by Location"
-  documentation = file("./dashboards/docs/cost_by_location_dashboard.md")
+dashboard "cloud_billing_report_cost_by_location_dashboard" {
+  title         = "GCP Cloud Billing Report: Cost by Location"
+  documentation = file("./dashboards/docs/cloud_billing_report_cost_by_location_dashboard.md")
 
-  tags = merge(local.gcp_cost_and_usage_insights_common_tags, {
+  tags = merge(local.gcp_cloud_billing_insights_common_tags, {
     type = "Dashboard"
   })
 
   container {
     # Multi-select Project Input
-    input "cost_by_location_dashboard_projects" {
+    input "cloud_billing_report_cost_by_location_dashboard_projects" {
       title       = "Select projects:"
       description = "Choose one or more GCP projects to analyze."
       type        = "multiselect"
       width       = 4
-      query       = query.cost_by_location_dashboard_projects_input
+      query       = query.cloud_billing_report_cost_by_location_dashboard_projects_input
     }
   }
 
@@ -21,45 +21,45 @@ dashboard "cost_by_location_dashboard" {
     # Combined cards showing various metrics
     card {
       width = 2
-      query = query.cost_by_location_dashboard_total_cost
+      query = query.cloud_billing_report_cost_by_location_dashboard_total_cost
       icon  = "attach_money"
       type  = "info"
 
       args = {
-        "project_ids" = self.input.cost_by_location_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_location_dashboard_projects.value
       }
     }
 
     card {
       width = 2
-      query = query.cost_by_location_dashboard_total_projects
+      query = query.cloud_billing_report_cost_by_location_dashboard_total_projects
       icon  = "folder"
       type  = "info"
 
       args = {
-        "project_ids" = self.input.cost_by_location_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_location_dashboard_projects.value
       }
     }
 
     card {
       width = 2
-      query = query.cost_by_location_dashboard_total_regions
+      query = query.cloud_billing_report_cost_by_location_dashboard_total_regions
       icon  = "globe"
       type  = "info"
 
       args = {
-        "project_ids" = self.input.cost_by_location_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_location_dashboard_projects.value
       }
     }
 
     card {
       width = 2
-      query = query.cost_by_location_dashboard_total_zones
+      query = query.cloud_billing_report_cost_by_location_dashboard_total_zones
       icon  = "location_on"
       type  = "info"
 
       args = {
-        "project_ids" = self.input.cost_by_location_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_location_dashboard_projects.value
       }
     }
   }
@@ -70,10 +70,10 @@ dashboard "cost_by_location_dashboard" {
       title = "Monthly Cost Trend by Region"
       type  = "column"
       width = 6
-      query = query.cost_by_location_dashboard_monthly_cost
+      query = query.cloud_billing_report_cost_by_location_dashboard_monthly_cost
 
       args = {
-        "project_ids" = self.input.cost_by_location_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_location_dashboard_projects.value
       }
 
       legend {
@@ -85,10 +85,10 @@ dashboard "cost_by_location_dashboard" {
       title = "Top 10 Locations"
       type  = "table"
       width = 6
-      query = query.cost_by_location_dashboard_top_10_locations
+      query = query.cloud_billing_report_cost_by_location_dashboard_top_10_locations
 
       args = {
-        "project_ids" = self.input.cost_by_location_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_location_dashboard_projects.value
       }
     }
   }
@@ -98,10 +98,10 @@ dashboard "cost_by_location_dashboard" {
     table {
       title = "Location Costs"
       width = 12
-      query = query.cost_by_location_dashboard_location_costs
+      query = query.cloud_billing_report_cost_by_location_dashboard_location_costs
 
       args = {
-        "project_ids" = self.input.cost_by_location_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_location_dashboard_projects.value
       }
     }
   }
@@ -109,7 +109,7 @@ dashboard "cost_by_location_dashboard" {
 
 # Query Definitions
 
-query "cost_by_location_dashboard_total_cost" {
+query "cloud_billing_report_cost_by_location_dashboard_total_cost" {
   sql = <<-EOQ
     select
       'Total Cost (' || currency || ')' as label,
@@ -130,7 +130,7 @@ query "cost_by_location_dashboard_total_cost" {
   }
 }
 
-query "cost_by_location_dashboard_total_projects" {
+query "cloud_billing_report_cost_by_location_dashboard_total_projects" {
   sql = <<-EOQ
     select
       'Projects' as label,
@@ -148,7 +148,7 @@ query "cost_by_location_dashboard_total_projects" {
   }
 }
 
-query "cost_by_location_dashboard_total_regions" {
+query "cloud_billing_report_cost_by_location_dashboard_total_regions" {
   sql = <<-EOQ
     select
       'Regions' as label,
@@ -166,7 +166,7 @@ query "cost_by_location_dashboard_total_regions" {
   }
 }
 
-query "cost_by_location_dashboard_total_zones" {
+query "cloud_billing_report_cost_by_location_dashboard_total_zones" {
   sql = <<-EOQ
     select
       'Zones' as label,
@@ -184,7 +184,7 @@ query "cost_by_location_dashboard_total_zones" {
   }
 }
 
-query "cost_by_location_dashboard_monthly_cost" {
+query "cloud_billing_report_cost_by_location_dashboard_monthly_cost" {
   sql = <<-EOQ
     select
       date_trunc('month', usage_start_time)::timestamp as "Month",
@@ -209,7 +209,7 @@ query "cost_by_location_dashboard_monthly_cost" {
   }
 }
 
-query "cost_by_location_dashboard_top_10_locations" {
+query "cloud_billing_report_cost_by_location_dashboard_top_10_locations" {
   sql = <<-EOQ
     select
       coalesce(location.region, 'global') as "Region",
@@ -234,7 +234,7 @@ query "cost_by_location_dashboard_top_10_locations" {
   }
 }
 
-query "cost_by_location_dashboard_location_costs" {
+query "cloud_billing_report_cost_by_location_dashboard_location_costs" {
   sql = <<-EOQ
     select
       project_id as "Project ID",
@@ -264,7 +264,7 @@ query "cost_by_location_dashboard_location_costs" {
   }
 }
 
-query "cost_by_location_dashboard_projects_input" {
+query "cloud_billing_report_cost_by_location_dashboard_projects_input" {
   sql = <<-EOQ
     with project_ids as (
       select

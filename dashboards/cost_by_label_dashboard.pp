@@ -1,20 +1,20 @@
-dashboard "cost_by_label_dashboard" {
-  title         = "GCP Cost and Usage Report: Cost by Label"
-  documentation = file("./dashboards/docs/cost_by_label_dashboard.md")
+dashboard "cloud_billing_report_cost_by_label_dashboard" {
+  title         = "GCP Cloud Billing Report: Cost by Label"
+  documentation = file("./dashboards/docs/cloud_billing_report_cost_by_label_dashboard.md")
 
-  tags = merge(local.gcp_cost_and_usage_insights_common_tags, {
+  tags = merge(local.gcp_cloud_billing_insights_common_tags, {
     type = "Dashboard"
   })
 
-  input "cost_by_label_dashboard_projects" {
+  input "cloud_billing_report_cost_by_label_dashboard_projects" {
     title       = "Select projects:"
     description = "Choose one or more GCP projects to analyze."
     type        = "multiselect"
-    query       = query.cost_by_label_dashboard_projects_input
+    query       = query.cloud_billing_report_cost_by_label_dashboard_projects_input
     width       = 4
   }
 
-  input "cost_by_label_dashboard_label_type" {
+  input "cloud_billing_report_cost_by_label_dashboard_label_type" {
     title       = "Select label type:"
     description = "Choose the type of label to analyze (project, resource, or system)."
     type        = "select"
@@ -25,38 +25,38 @@ dashboard "cost_by_label_dashboard" {
     option "system_labels" { label = "System Labels" }
   }
 
-  input "cost_by_label_dashboard_label_key" {
+  input "cloud_billing_report_cost_by_label_dashboard_label_key" {
     title       = "Select a label key:"
     description = "Select a label key to analyze costs by label values."
     type        = "select"
-    query       = query.cost_by_label_dashboard_label_key_input
+    query       = query.cloud_billing_report_cost_by_label_dashboard_label_key_input
     width       = 4
     args = {
-      "project_ids" = self.input.cost_by_label_dashboard_projects.value
-      "label_type"  = self.input.cost_by_label_dashboard_label_type.value
+      "project_ids" = self.input.cloud_billing_report_cost_by_label_dashboard_projects.value
+      "label_type"  = self.input.cloud_billing_report_cost_by_label_dashboard_label_type.value
     }
   }
 
   container {
     card {
       width = 2
-      query = query.cost_by_label_dashboard_total_cost
+      query = query.cloud_billing_report_cost_by_label_dashboard_total_cost
       icon  = "attach_money"
       type  = "info"
       args = {
-        "project_ids" = self.input.cost_by_label_dashboard_projects.value
-        "label_type"  = self.input.cost_by_label_dashboard_label_type.value
-        "label_key"   = self.input.cost_by_label_dashboard_label_key.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_label_dashboard_projects.value
+        "label_type"  = self.input.cloud_billing_report_cost_by_label_dashboard_label_type.value
+        "label_key"   = self.input.cloud_billing_report_cost_by_label_dashboard_label_key.value
       }
     }
 
     card {
       width = 2
-      query = query.cost_by_label_dashboard_total_projects
+      query = query.cloud_billing_report_cost_by_label_dashboard_total_projects
       icon  = "folder"
       type  = "info"
       args = {
-        "project_ids" = self.input.cost_by_label_dashboard_projects.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_label_dashboard_projects.value
       }
     }
   }
@@ -66,11 +66,11 @@ dashboard "cost_by_label_dashboard" {
       title = "Monthly Cost by Label Value"
       type  = "column"
       width = 6
-      query = query.cost_by_label_dashboard_monthly_cost
+      query = query.cloud_billing_report_cost_by_label_dashboard_monthly_cost
       args = {
-        "project_ids" = self.input.cost_by_label_dashboard_projects.value
-        "label_type"  = self.input.cost_by_label_dashboard_label_type.value
-        "label_key"   = self.input.cost_by_label_dashboard_label_key.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_label_dashboard_projects.value
+        "label_type"  = self.input.cloud_billing_report_cost_by_label_dashboard_label_type.value
+        "label_key"   = self.input.cloud_billing_report_cost_by_label_dashboard_label_key.value
       }
       legend { display = "none" }
     }
@@ -79,11 +79,11 @@ dashboard "cost_by_label_dashboard" {
       title = "Top 10 Label Values"
       type  = "table"
       width = 6
-      query = query.cost_by_label_dashboard_top_10_label_values
+      query = query.cloud_billing_report_cost_by_label_dashboard_top_10_label_values
       args = {
-        "project_ids" = self.input.cost_by_label_dashboard_projects.value
-        "label_type"  = self.input.cost_by_label_dashboard_label_type.value
-        "label_key"   = self.input.cost_by_label_dashboard_label_key.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_label_dashboard_projects.value
+        "label_type"  = self.input.cloud_billing_report_cost_by_label_dashboard_label_type.value
+        "label_key"   = self.input.cloud_billing_report_cost_by_label_dashboard_label_key.value
       }
     }
   }
@@ -92,18 +92,18 @@ dashboard "cost_by_label_dashboard" {
     table {
       title = "Label Value Costs"
       width = 12
-      query = query.cost_by_label_dashboard_label_value_costs
+      query = query.cloud_billing_report_cost_by_label_dashboard_label_value_costs
       args = {
-        "project_ids" = self.input.cost_by_label_dashboard_projects.value
-        "label_type"  = self.input.cost_by_label_dashboard_label_type.value
-        "label_key"   = self.input.cost_by_label_dashboard_label_key.value
+        "project_ids" = self.input.cloud_billing_report_cost_by_label_dashboard_projects.value
+        "label_type"  = self.input.cloud_billing_report_cost_by_label_dashboard_label_type.value
+        "label_key"   = self.input.cloud_billing_report_cost_by_label_dashboard_label_key.value
       }
     }
   }
 }
 
 # --- Total Cost ---
-query "cost_by_label_dashboard_total_cost" {
+query "cloud_billing_report_cost_by_label_dashboard_total_cost" {
   sql = <<-EOQ
     with filtered as (
       select cost, currency, project_id, project_labels, labels, system_labels
@@ -160,7 +160,7 @@ query "cost_by_label_dashboard_total_cost" {
 }
 
 # --- Total Projects ---
-query "cost_by_label_dashboard_total_projects" {
+query "cloud_billing_report_cost_by_label_dashboard_total_projects" {
   sql = <<-EOQ
     select
       'Projects' as label,
@@ -175,7 +175,7 @@ query "cost_by_label_dashboard_total_projects" {
 }
 
 # --- Monthly Cost by Label Value ---
-query "cost_by_label_dashboard_monthly_cost" {
+query "cloud_billing_report_cost_by_label_dashboard_monthly_cost" {
   sql = <<-EOQ
     with filtered as (
       select date_trunc('month', usage_start_time) as month,
@@ -231,7 +231,7 @@ query "cost_by_label_dashboard_monthly_cost" {
 }
 
 # --- Top 10 Label Values ---
-query "cost_by_label_dashboard_top_10_label_values" {
+query "cloud_billing_report_cost_by_label_dashboard_top_10_label_values" {
   sql = <<-EOQ
     with filtered as (
       select cost, project_labels, labels, system_labels, project_id
@@ -282,7 +282,7 @@ query "cost_by_label_dashboard_top_10_label_values" {
 }
 
 # --- Detailed Table: Label Value Costs ---
-query "cost_by_label_dashboard_label_value_costs" {
+query "cloud_billing_report_cost_by_label_dashboard_label_value_costs" {
   sql = <<-EOQ
     with filtered as (
       select project_id, project_name, location.region as region,
@@ -340,7 +340,7 @@ query "cost_by_label_dashboard_label_value_costs" {
 }
 
 # --- Projects Input ---
-query "cost_by_label_dashboard_projects_input" {
+query "cloud_billing_report_cost_by_label_dashboard_projects_input" {
   sql = <<-EOQ
     with project_ids as (
       select
@@ -366,7 +366,7 @@ query "cost_by_label_dashboard_projects_input" {
 }
 
 # --- Label Key Input ---
-query "cost_by_label_dashboard_label_key_input" {
+query "cloud_billing_report_cost_by_label_dashboard_label_key_input" {
   sql = <<-EOQ
     with filtered as (
       select project_id, project_labels, labels, system_labels

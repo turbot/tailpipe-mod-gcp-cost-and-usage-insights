@@ -7,8 +7,8 @@
 The [GCP Cost and Usage Insights Mod](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cost-and-usage-insights) contains pre-built dashboards which can be used to monitor and analyze costs across your GCP projects using [Cloud Billing Reports](https://cloud.google.com/billing/docs/reports).
 
 <img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_overview_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_cost_by_service_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_cost_by_label_dashboard.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_cloud_billing_report_cost_by_service_dashboard.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_cloud_billing_report_cost_by_label_dashboard.png" width="50%" type="thumbnail"/>
 
 ## Documentation
 
