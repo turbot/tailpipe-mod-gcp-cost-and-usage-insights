@@ -3,19 +3,21 @@ dashboard "cloud_billing_report_cost_by_service_dashboard" {
   documentation = file("./dashboards/docs/cloud_billing_report_cost_by_service_dashboard.md")
 
   tags = merge(local.gcp_cloud_billing_insights_common_tags, {
-    type = "Dashboard"
+    type    = "Dashboard"
+    service = "GCP/CloudBilling"
   })
 
-  input "cloud_billing_report_cost_by_service_dashboard_projects" {
-    title       = "Select projects:"
-    description = "Choose one or more GCP projects to analyze"
-    type        = "multiselect"
-    width       = 4
-    query       = query.cloud_billing_report_cost_by_service_dashboard_projects_input
+  container {
+    input "cloud_billing_report_cost_by_service_dashboard_projects" {
+      title       = "Select projects:"
+      description = "Choose one or more GCP projects to analyze"
+      type        = "multiselect"
+      width       = 4
+      query       = query.cloud_billing_report_cost_by_service_dashboard_projects_input
+    }
   }
 
   container {
-    # Combined card showing Total Cost with Currency
     card {
       width = 2
       query = query.cloud_billing_report_cost_by_service_dashboard_total_cost
@@ -48,21 +50,9 @@ dashboard "cloud_billing_report_cost_by_service_dashboard" {
         "project_ids" = self.input.cloud_billing_report_cost_by_service_dashboard_projects.value
       }
     }
-
-    card {
-      width = 2
-      query = query.cloud_billing_report_cost_by_service_dashboard_total_skus
-      icon  = "category"
-      type  = "info"
-
-      args = {
-        "project_ids" = self.input.cloud_billing_report_cost_by_service_dashboard_projects.value
-      }
-    }
   }
 
   container {
-    # Cost Trend Graphs
     chart {
       title = "Monthly Cost Trend"
       type  = "column"
@@ -91,7 +81,6 @@ dashboard "cloud_billing_report_cost_by_service_dashboard" {
   }
 
   container {
-    # Detailed Table
     table {
       title = "Service Costs"
       width = 12
@@ -104,7 +93,7 @@ dashboard "cloud_billing_report_cost_by_service_dashboard" {
   }
 }
 
-# Query Definitions
+# Queries
 
 query "cloud_billing_report_cost_by_service_dashboard_total_cost" {
   sql = <<-EOQ
@@ -149,25 +138,7 @@ query "cloud_billing_report_cost_by_service_dashboard_total_services" {
   sql = <<-EOQ
     select
       'Services' as label,
-      count(distinct service_id) as value
-    from
-      gcp_billing_report
-    where
-      ('all' in ($1) or project_id in $1);
-  EOQ
-
-  param "project_ids" {}
-
-  tags = {
-    folder = "Hidden"
-  }
-}
-
-query "cloud_billing_report_cost_by_service_dashboard_total_skus" {
-  sql = <<-EOQ
-    select
-      'SKUs' as label,
-      count(distinct sku_id) as value
+      count(distinct service_description) as value
     from
       gcp_billing_report
     where
@@ -184,8 +155,8 @@ query "cloud_billing_report_cost_by_service_dashboard_total_skus" {
 query "cloud_billing_report_cost_by_service_dashboard_monthly_cost" {
   sql = <<-EOQ
     select
-      date_trunc('month', usage_start_time)::timestamp as "Month",
-      coalesce(service_description, 'N/A') as "Service",
+      strftime(date_trunc('month', usage_start_time), '%b %Y') as "Month",
+      service_description as "Service",
       round(sum(cost), 2) as "Total Cost"
     from
       gcp_billing_report
@@ -209,19 +180,14 @@ query "cloud_billing_report_cost_by_service_dashboard_monthly_cost" {
 query "cloud_billing_report_cost_by_service_dashboard_top_10_services" {
   sql = <<-EOQ
     select
-      coalesce(service_description, 'N/A') as "Service",
-      service_id as "Service ID",
+      service_description as "Service",
       round(sum(cost), 2) as "Total Cost"
     from
       gcp_billing_report
     where
       ('all' in ($1) or project_id in $1)
     group by
-      case
-        when service_description like '%steampipe%' then 'aqua-glider'
-        else coalesce(service_description, 'N/A')
-      end,
-      service_id
+      service_description
     order by
       sum(cost) desc
     limit 10;
@@ -237,7 +203,7 @@ query "cloud_billing_report_cost_by_service_dashboard_top_10_services" {
 query "cloud_billing_report_cost_by_service_dashboard_service_costs" {
   sql = <<-EOQ
     select
-      coalesce(service_description, 'N/A') as "Service",
+      service_description as "Service",
       project_name as "Project",
       coalesce(location.region, 'global') as "Location",
       round(sum(cost), 2) as "Total Cost"
@@ -247,10 +213,7 @@ query "cloud_billing_report_cost_by_service_dashboard_service_costs" {
       ('all' in ($1) or project_id in $1)
     group by
       service_description,
-      case
-        when project_name like '%steampipe%' then 'aqua-glider'
-        else project_name
-      end,
+      project_name,
       location.region
     order by
       sum(cost) desc;
@@ -268,11 +231,16 @@ query "cloud_billing_report_cost_by_service_dashboard_projects_input" {
     with project_ids as (
       select
         distinct on(project_id)
-        project_id || ' (' || coalesce(project_name, '') || ')' as label,
+        project_id ||
+        case
+          when project_name is not null then ' (' || project_name || ')'
+          else ''
+        end as label,
         project_id as value
       from
         gcp_billing_report
-      order by label
+      order by
+        project_id
     )
     select
       'All' as label,
