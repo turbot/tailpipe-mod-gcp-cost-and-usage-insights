@@ -1,18 +1,18 @@
-# GCP Cost and Usage Insights Mod
+# GCP Cloud Billing Insights Mod
 
 [Tailpipe](https://tailpipe.io) is an open-source CLI tool that allows you to collect logs and query them with SQL.
 
 [Google Cloud Platform (GCP)](https://cloud.google.com/) is a suite of cloud computing services that runs on the same infrastructure that Google uses internally for its end-user products.
 
-The [GCP Cost and Usage Insights Mod](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cost-and-usage-insights) contains pre-built dashboards which can be used to monitor and analyze costs across your GCP projects using [Cloud Billing Reports](https://cloud.google.com/billing/docs/reports).
+The [GCP Cloud Billing Insights Mod](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cloud-billing-insights) contains pre-built dashboards which can be used to monitor and analyze costs across your GCP projects using [Cloud Billing Reports](https://cloud.google.com/billing/docs/reports).
 
-<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_overview_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_cloud_billing_report_cost_by_service_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/main/docs/images/gcp_cost_and_usage_cloud_billing_report_cost_by_label_dashboard.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/main/docs/images/gcp_cloud_billing_insights_cost_by_project_dashboard.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/main/docs/images/gcp_cloud_billing_insights_cost_by_service.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/main/docs/images/gcp_cloud_billing_insights_overview_dashboard.png" width="50%" type="thumbnail"/>
 
 ## Documentation
 
-- **[Dashboards →](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cost-and-usage-insights/dashboards)**
+- **[Dashboards →](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cloud-billing-insights/dashboards)**
 
 ## Getting Started
 
@@ -37,7 +37,7 @@ Install the mod:
 ```sh
 mkdir dashboards
 cd dashboards
-powerpipe mod install github.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights
+powerpipe mod install github.com/turbot/tailpipe-mod-gcp-cloud-billing-insights
 ```
 
 ### Browsing Dashboards

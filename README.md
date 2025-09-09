@@ -1,18 +1,18 @@
-# GCP Cost and Usage Insights Mod for Powerpipe
+# GCP Cloud Billing Insights Mod for Powerpipe
 
 [Tailpipe](https://tailpipe.io) is an open-source CLI tool that allows you to collect logs and query them with SQL.
 
 [GCP](https://cloud.google.com/) is a suite of cloud computing services that runs on the same infrastructure that Google uses internally for its end-user products.
 
-The [GCP Cost and Usage Insights Mod](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cost-and-usage-insights) contains pre-built dashboards which can be used to monitor and analyze costs across your GCP projects using [Cloud Billing Reports](https://cloud.google.com/billing/docs/reports).
+The [GCP Cloud Billing Insights Mod](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cloud-billing-insights) contains pre-built dashboards which can be used to monitor and analyze costs across your GCP projects using [Cloud Billing Reports](https://cloud.google.com/billing/docs/reports).
 
 View insights in dashboards:
-![image](docs/images/gcp_cost_and_usage_overview_dashboard.png)
-![image](docs/images/gcp_cost_and_usage_cloud_billing_report_cost_by_service_dashboard.png)
+![image](docs/images/gcp_cloud_billing_insights_overview_dashboard.png)
+![image](docs/images/gcp_cloud_billing_insights_cost_by_service_dashboard.png)
 
 ## Documentation
 
-- **[Dashboards →](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cost-and-usage-insights/dashboards)**
+- **[Dashboards →](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cloud-billing-insights/dashboards)**
 
 ## Getting Started
 
@@ -37,7 +37,7 @@ Install the mod:
 ```sh
 mkdir dashboards
 cd dashboards
-powerpipe mod install github.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights
+powerpipe mod install github.com/turbot/tailpipe-mod-gcp-cloud-billing-insights
 ```
 
 ### Browsing Dashboards
