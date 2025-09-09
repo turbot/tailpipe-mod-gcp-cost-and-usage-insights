@@ -3,7 +3,8 @@ dashboard "cloud_billing_report_cost_by_project_dashboard" {
   documentation = file("./dashboards/docs/cloud_billing_report_cost_by_project_dashboard.md")
 
   tags = merge(local.gcp_cloud_billing_insights_common_tags, {
-    type = "Dashboard"
+    type    = "Dashboard"
+    service = "GCP/CloudBilling"
   })
 
   container {
@@ -118,7 +119,7 @@ query "cloud_billing_report_cost_by_project_dashboard_total_projects" {
 query "cloud_billing_report_cost_by_project_dashboard_monthly_cost" {
   sql = <<-EOQ
     select
-      date_trunc('month', usage_start_time)::timestamp as "Month",
+      strftime(date_trunc('month', usage_start_time), '%b %Y') as "Month",
       project_id as "Project",
       round(sum(cost), 2) as "Total Cost"
     from
@@ -143,18 +144,14 @@ query "cloud_billing_report_cost_by_project_dashboard_monthly_cost" {
 query "cloud_billing_report_cost_by_project_dashboard_project_costs" {
   sql = <<-EOQ
     select
-      project_id as "Project ID",
-      project_name as "Project Name",
-      round(sum(cost), 2) as "Total Cost",
-      currency as "Currency"
+      project_name as "Project",
+      round(sum(cost), 2) as "Total Cost"
     from
       gcp_billing_report
     where
       ('all' in ($1) or project_id in $1)
     group by
-      project_id,
-      project_name,
-      currency
+      project_name
     order by
       sum(cost) desc;
   EOQ
@@ -175,6 +172,9 @@ query "cloud_billing_report_cost_by_project_dashboard_projects_input" {
         project_id as value
       from
         gcp_billing_report
+      where
+        project_id is not null and project_id != ''
+        and project_name is not null and project_name != ''
       order by label
     )
     select

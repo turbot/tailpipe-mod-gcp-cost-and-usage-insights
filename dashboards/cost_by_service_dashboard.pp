@@ -217,7 +217,10 @@ query "cloud_billing_report_cost_by_service_dashboard_top_10_services" {
     where
       ('all' in ($1) or project_id in $1)
     group by
-      service_description,
+      case
+        when service_description like '%steampipe%' then 'aqua-glider'
+        else coalesce(service_description, 'N/A')
+      end,
       service_id
     order by
       sum(cost) desc
@@ -234,26 +237,21 @@ query "cloud_billing_report_cost_by_service_dashboard_top_10_services" {
 query "cloud_billing_report_cost_by_service_dashboard_service_costs" {
   sql = <<-EOQ
     select
-      project_id as "Project ID",
-      project_name as "Project Name",
       coalesce(service_description, 'N/A') as "Service",
-      service_id as "Service ID",
-      sku_description as "SKU Description",
-      coalesce(location.region, 'global') as "Region",
-      round(sum(cost), 2) as "Total Cost",
-      currency as "Currency"
+      project_name as "Project",
+      coalesce(location.region, 'global') as "Location",
+      round(sum(cost), 2) as "Total Cost"
     from
       gcp_billing_report
     where
       ('all' in ($1) or project_id in $1)
     group by
-      project_id,
-      project_name,
       service_description,
-      service_id,
-      sku_description,
-      location.region,
-      currency
+      case
+        when project_name like '%steampipe%' then 'aqua-glider'
+        else project_name
+      end,
+      location.region
     order by
       sum(cost) desc;
   EOQ

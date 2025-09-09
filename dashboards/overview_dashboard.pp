@@ -119,17 +119,6 @@ dashboard "overview_dashboard" {
         "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
       }
     }
-
-    chart {
-      title = "Top 10 SKUs"
-      type  = "table"
-      width = 6
-      query = query.cloud_billing_report_overview_dashboard_top_10_skus
-
-      args = {
-        "project_ids" = self.input.cloud_billing_report_overview_dashboard_projects.value
-      }
-    }
   }
 }
 
@@ -239,17 +228,13 @@ query "cloud_billing_report_overview_dashboard_top_10_projects" {
   sql = <<-EOQ
     select
       project_id as "Project ID",
-      project_name as "Project Name",
-      round(sum(cost), 2) as "Total Cost",
-      currency as "Currency"
+      round(sum(cost), 2) as "Total Cost"
     from
       gcp_billing_report
     where
       ('all' in ($1) or project_id in $1)
     group by
-      project_id,
-      project_name,
-      currency
+      project_id
     order by
       sum(cost) desc
     limit 10;
@@ -300,33 +285,6 @@ query "cloud_billing_report_overview_dashboard_top_10_services" {
     group by
       service_description,
       service_id
-    order by
-      sum(cost) desc
-    limit 10;
-  EOQ
-
-  param "project_ids" {}
-
-  tags = {
-    folder = "Hidden"
-  }
-}
-
-query "cloud_billing_report_overview_dashboard_top_10_skus" {
-  sql = <<-EOQ
-    select
-      sku_description as "SKU",
-      sku_id as "SKU ID",
-      service_description as "Service",
-      round(sum(cost), 2) as "Total Cost"
-    from
-      gcp_billing_report
-    where
-      ('all' in ($1) or project_id in $1)
-    group by
-      sku_description,
-      sku_id,
-      service_description
     order by
       sum(cost) desc
     limit 10;
