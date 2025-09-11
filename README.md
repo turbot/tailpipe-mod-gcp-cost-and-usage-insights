@@ -64,4 +64,4 @@ Want to help but don't know where to start? Pick up one of the `help wanted` iss
 
 - [Powerpipe](https://github.com/turbot/powerpipe/labels/help%20wanted)
 - [Tailpipe](https://github.com/turbot/tailpipe/labels/help%20wanted)
-- [GCP Cost and Usage Insights Mod](https://github.com/turbot/tailpipe-mod-gcp-cost-and-usage-insights/labels/help%20wanted)
+- [GCP Cloud Billing Insights Mod](https://github.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/labels/help%20wanted)
