@@ -1,4 +1,4 @@
-dashboard "overview_dashboard" {
+dashboard "cloud_billing_report_overview_dashboard" {
   title         = "GCP Cloud Billing Report: Overview"
   documentation = file("./dashboards/docs/cloud_billing_report_overview_dashboard.md")
 

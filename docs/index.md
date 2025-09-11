@@ -7,7 +7,7 @@
 The [GCP Cloud Billing Insights Mod](https://hub.powerpipe.io/mods/turbot/tailpipe-mod-gcp-cloud-billing-insights) contains pre-built dashboards which can be used to monitor and analyze costs across your GCP projects using [Cloud Billing Reports](https://cloud.google.com/billing/docs/reports).
 
 <img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/main/docs/images/gcp_cloud_billing_insights_cost_by_project_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/main/docs/images/gcp_cloud_billing_insights_cost_by_service.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/main/docs/images/gcp_cloud_billing_insights_cost_by_service_dashboard.png" width="50%" type="thumbnail"/>
 <img src="https://raw.githubusercontent.com/turbot/tailpipe-mod-gcp-cloud-billing-insights/main/docs/images/gcp_cloud_billing_insights_overview_dashboard.png" width="50%" type="thumbnail"/>
 
 ## Documentation

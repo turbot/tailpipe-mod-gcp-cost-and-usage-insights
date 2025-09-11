@@ -214,7 +214,7 @@ query "cloud_billing_report_cost_by_location_dashboard_top_10_locations" {
   sql = <<-EOQ
     select
       coalesce(location.region, 'global') as "Location",
-      coalesce(location.zone, '-') as "Zone",
+      location.zone as "Zone",
       round(sum(cost), 2) as "Total Cost"
     from
       gcp_billing_report
@@ -238,10 +238,9 @@ query "cloud_billing_report_cost_by_location_dashboard_top_10_locations" {
 query "cloud_billing_report_cost_by_location_dashboard_location_costs" {
   sql = <<-EOQ
     select
-      project_id as "Project ID",
-      project_name as "Project Name",
+      project_id as "Project",
       coalesce(location.region, 'global') as "Location",
-      coalesce(location.zone, '-') as "Zone",
+      location.zone as "Zone",
       round(sum(cost), 2) as "Total Cost",
       currency as "Currency"
     from
