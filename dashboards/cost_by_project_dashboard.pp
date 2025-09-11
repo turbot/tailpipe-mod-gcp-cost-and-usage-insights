@@ -10,7 +10,7 @@ dashboard "cloud_billing_report_cost_by_project_dashboard" {
   container {
     # Multi-select Project Input
     input "cloud_billing_report_cost_by_project_dashboard_projects" {
-      title       = "Select projects:"
+      title       = "Select project(s):"
       description = "Choose one or more GCP projects to analyze."
       type        = "multiselect"
       width       = 4

@@ -3,12 +3,13 @@ dashboard "overview_dashboard" {
   documentation = file("./dashboards/docs/cloud_billing_report_overview_dashboard.md")
 
   tags = merge(local.gcp_cloud_billing_insights_common_tags, {
-    type = "Dashboard"
+    type    = "Dashboard"
+    service = "GCP/CloudBilling"
   })
 
   container {
     input "cloud_billing_report_overview_dashboard_projects" {
-      title       = "Select projects:"
+      title       = "Select project(s):"
       description = "Choose one or more GCP projects to analyze."
       type        = "multiselect"
       width       = 4

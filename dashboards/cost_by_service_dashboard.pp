@@ -9,7 +9,7 @@ dashboard "cloud_billing_report_cost_by_service_dashboard" {
 
   container {
     input "cloud_billing_report_cost_by_service_dashboard_projects" {
-      title       = "Select projects:"
+      title       = "Select project(s):"
       description = "Choose one or more GCP projects to analyze"
       type        = "multiselect"
       width       = 4
@@ -240,7 +240,7 @@ query "cloud_billing_report_cost_by_service_dashboard_projects_input" {
       from
         gcp_billing_report
       order by
-        project_id
+        label
     )
     select
       'All' as label,

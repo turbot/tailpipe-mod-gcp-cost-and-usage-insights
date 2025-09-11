@@ -3,13 +3,14 @@ dashboard "cloud_billing_report_cost_by_location_dashboard" {
   documentation = file("./dashboards/docs/cloud_billing_report_cost_by_location_dashboard.md")
 
   tags = merge(local.gcp_cloud_billing_insights_common_tags, {
-    type = "Dashboard"
+    type    = "Dashboard"
+    service = "GCP/CloudBilling"
   })
 
   container {
     # Multi-select Project Input
     input "cloud_billing_report_cost_by_location_dashboard_projects" {
-      title       = "Select projects:"
+      title       = "Select project(s):"
       description = "Choose one or more GCP projects to analyze."
       type        = "multiselect"
       width       = 4
@@ -43,7 +44,7 @@ dashboard "cloud_billing_report_cost_by_location_dashboard" {
 
     card {
       width = 2
-      query = query.cloud_billing_report_cost_by_location_dashboard_total_regions
+      query = query.cloud_billing_report_cost_by_location_dashboard_total_locations
       icon  = "globe"
       type  = "info"
 
@@ -67,7 +68,7 @@ dashboard "cloud_billing_report_cost_by_location_dashboard" {
   container {
     # Cost Trend Graphs
     chart {
-      title = "Monthly Cost Trend by Region"
+      title = "Monthly Cost Trend by Location"
       type  = "column"
       width = 6
       query = query.cloud_billing_report_cost_by_location_dashboard_monthly_cost
@@ -148,10 +149,10 @@ query "cloud_billing_report_cost_by_location_dashboard_total_projects" {
   }
 }
 
-query "cloud_billing_report_cost_by_location_dashboard_total_regions" {
+query "cloud_billing_report_cost_by_location_dashboard_total_locations" {
   sql = <<-EOQ
     select
-      'Regions' as label,
+      'Locations' as label,
       count(distinct coalesce(location.region, 'global')) as value
     from
       gcp_billing_report
@@ -188,7 +189,7 @@ query "cloud_billing_report_cost_by_location_dashboard_monthly_cost" {
   sql = <<-EOQ
     select
       date_trunc('month', usage_start_time)::timestamp as "Month",
-      coalesce(location.region, 'global') as "Region",
+      coalesce(location.region, 'global') as "Location",
       round(sum(cost), 2) as "Total Cost"
     from
       gcp_billing_report
@@ -212,7 +213,7 @@ query "cloud_billing_report_cost_by_location_dashboard_monthly_cost" {
 query "cloud_billing_report_cost_by_location_dashboard_top_10_locations" {
   sql = <<-EOQ
     select
-      coalesce(location.region, 'global') as "Region",
+      coalesce(location.region, 'global') as "Location",
       coalesce(location.zone, '-') as "Zone",
       round(sum(cost), 2) as "Total Cost"
     from
@@ -239,7 +240,7 @@ query "cloud_billing_report_cost_by_location_dashboard_location_costs" {
     select
       project_id as "Project ID",
       project_name as "Project Name",
-      coalesce(location.region, 'global') as "Region",
+      coalesce(location.region, 'global') as "Location",
       coalesce(location.zone, '-') as "Zone",
       round(sum(cost), 2) as "Total Cost",
       currency as "Currency"
